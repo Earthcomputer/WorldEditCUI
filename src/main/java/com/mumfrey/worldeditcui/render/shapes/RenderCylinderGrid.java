@@ -6,6 +6,7 @@ import com.mumfrey.worldeditcui.render.points.PointCube;
 import com.mumfrey.worldeditcui.util.Vector3;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import org.lwjgl.opengl.GL11;
 
@@ -61,28 +62,30 @@ public class RenderCylinderGrid extends RenderRegion
 			for (double tempX = negRadiusX; tempX <= posRadiusX; ++tempX)
 			{
 				double tempZ = this.radZ * Math.cos(Math.asin(tempX / this.radX));
-				buf.begin(GL11.GL_LINE_LOOP, VertexFormats.POSITION);
+				buf.begin(VertexFormat.DrawMode.LINE_STRIP, VertexFormats.POSITION);
 				line.applyColour();
 				
 				buf.vertex(xPos + tempX, tmaxY - cameraPos.getY(), zPos + tempZ).next();
 				buf.vertex(xPos + tempX, tmaxY - cameraPos.getY(), zPos - tempZ).next();
 				buf.vertex(xPos + tempX, tminY - cameraPos.getY(), zPos - tempZ).next();
 				buf.vertex(xPos + tempX, tminY - cameraPos.getY(), zPos + tempZ).next();
-				
+				buf.vertex(xPos + tempX, tmaxY - cameraPos.getY(), zPos + tempZ).next(); // 1st vertex repeated
+
 				tessellator.draw();
 			}
 			
 			for (double tempZ = negRadiusZ; tempZ <= posRadiusZ; ++tempZ)
 			{
 				double tempX = this.radX * Math.sin(Math.acos(tempZ / this.radZ));
-				buf.begin(GL11.GL_LINE_LOOP, VertexFormats.POSITION);
+				buf.begin(VertexFormat.DrawMode.LINE_STRIP, VertexFormats.POSITION);
 				line.applyColour();
 				
 				buf.vertex(xPos + tempX, tmaxY - cameraPos.getY(), zPos + tempZ).next();
 				buf.vertex(xPos - tempX, tmaxY - cameraPos.getY(), zPos + tempZ).next();
 				buf.vertex(xPos - tempX, tminY - cameraPos.getY(), zPos + tempZ).next();
 				buf.vertex(xPos + tempX, tminY - cameraPos.getY(), zPos + tempZ).next();
-				
+				buf.vertex(xPos + tempX, tmaxY - cameraPos.getY(), zPos + tempZ).next(); // 1st vertex repeated
+
 				tessellator.draw();
 			}
 		}

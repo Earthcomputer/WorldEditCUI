@@ -3,11 +3,11 @@ plugins {
     id("fabric-loom") version "0.5-SNAPSHOT"
 }
 
-val minecraftVersion = "1.16.4"
-val yarnVersion = "$minecraftVersion+build.7:v2"
+val minecraftVersion = "20w49a"
+val yarnVersion = "$minecraftVersion+build.1:v2"
 val fabricLoaderVersion = "0.10.8"
-val fabricApiVersion = "0.27.1+1.16"
-val modmenuVersion = "1.14.13+build.22"
+val fabricApiVersion = "0.27.2+1.17"
+val modmenuVersion = "2.0.0-beta.1+build.2"
 
 group = "com.mumfrey.worldeditcui"
 version = "$minecraftVersion+01-SNAPSHOT"
@@ -18,6 +18,11 @@ repositories {
     }
     maven(url = "https://maven.dblsaiko.net/") {
         name = "dblsaiko"
+    }
+    mavenLocal {
+        content {
+            includeGroup("com.sk89q.worldedit")
+        }
     }
 }
 
@@ -39,12 +44,11 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:$fabricLoaderVersion")
     modImplementation("net.fabricmc.fabric-api:fabric-api:$fabricApiVersion")
     modImplementation("io.github.prospector:modmenu:$modmenuVersion")
-    compileOnly("com.google.code.findbugs:jsr305:3.0.2") // compiler will crash without?
 
-    modImplementation(include("grondag:frex-events-mc116:1.0.+")!!) // for render event
+    // modImplementation(include("grondag:frex-events-mc116:1.0.+")!!) // for render event
 
     // for development
-    modRuntime("com.sk89q.worldedit:worldedit-fabric-mc1.16.3:7.3.0-SNAPSHOT") {
+    modRuntime("com.sk89q.worldedit:worldedit-fabric-mc20w48a:7.2.1-SNAPSHOT") {
         exclude(group = "com.google.guava")
         exclude(group = "com.google.code.gson")
         exclude(group = "it.unimi.dsi")

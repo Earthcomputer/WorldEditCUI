@@ -7,8 +7,8 @@ import com.mumfrey.worldeditcui.render.points.PointCube;
 import com.mumfrey.worldeditcui.util.Vector3;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
-import org.lwjgl.opengl.GL11;
 
 /**
  * Draws an ellipsoid shape around a centre point.
@@ -18,6 +18,11 @@ import org.lwjgl.opengl.GL11;
  */
 public class RenderEllipsoid extends RenderRegion
 {
+
+	/**
+	 * The number of intervals to draw in around the ellipsoid.
+	 */
+	private static final double STEPS = 40;
 	protected final static double TAU = Math.PI * 2.0;
 	
 	protected PointCube centre;
@@ -62,12 +67,12 @@ public class RenderEllipsoid extends RenderRegion
 		int yRad = (int)Math.floor(this.radii.getY());
 		for (int yBlock = -yRad; yBlock < yRad; yBlock++)
 		{
-			buf.begin(GL11.GL_LINE_LOOP, VertexFormats.POSITION);
+			buf.begin(VertexFormat.DrawMode.LINE_STRIP, VertexFormats.POSITION);
 			line.applyColour();
 			
-			for (int i = 0; i <= 40; i++)
+			for (int i = 0; i <= STEPS + 1; i++)
 			{
-				double tempTheta = i * TAU / 40;
+				double tempTheta = (i  % (STEPS + 1)) * TAU / STEPS; // overlap by one for LINE_STRIP
 				double tempX = this.radii.getX() * Math.cos(tempTheta) * Math.cos(Math.asin(yBlock / this.radii.getY()));
 				double tempZ = this.radii.getZ() * Math.sin(tempTheta) * Math.cos(Math.asin(yBlock / this.radii.getY()));
 				
@@ -76,12 +81,12 @@ public class RenderEllipsoid extends RenderRegion
 			tessellator.draw();
 		}
 		
-		buf.begin(GL11.GL_LINE_LOOP, VertexFormats.POSITION);
+		buf.begin(VertexFormat.DrawMode.LINE_STRIP, VertexFormats.POSITION);
 		line.applyColour();
 		
-		for (int i = 0; i <= 40; i++)
+		for (int i = 0; i <= STEPS + 1; i++)
 		{
-			double tempTheta = i * TAU / 40;
+			double tempTheta = (i  % (STEPS + 1)) * TAU / STEPS; // overlap by one for LINE_STRIP
 			double tempX = this.radii.getX() * Math.cos(tempTheta);
 			double tempZ = this.radii.getZ() * Math.sin(tempTheta);
 			
@@ -98,12 +103,12 @@ public class RenderEllipsoid extends RenderRegion
 		int xRad = (int)Math.floor(this.radii.getX());
 		for (int xBlock = -xRad; xBlock < xRad; xBlock++)
 		{
-			buf.begin(GL11.GL_LINE_LOOP, VertexFormats.POSITION);
+			buf.begin(VertexFormat.DrawMode.LINE_STRIP, VertexFormats.POSITION);
 			line.applyColour();
 			
-			for (int i = 0; i <= 40; i++)
+			for (int i = 0; i <= STEPS + 1; i++)
 			{
-				double tempTheta = i * TAU / 40;
+				double tempTheta = (i  % (STEPS + 1)) * TAU / STEPS; // overlap by one for LINE_STRIP
 				double tempY = this.radii.getY() * Math.cos(tempTheta) * Math.sin(Math.acos(xBlock / this.radii.getX()));
 				double tempZ = this.radii.getZ() * Math.sin(tempTheta) * Math.sin(Math.acos(xBlock / this.radii.getX()));
 				
@@ -112,12 +117,12 @@ public class RenderEllipsoid extends RenderRegion
 			tessellator.draw();
 		}
 		
-		buf.begin(GL11.GL_LINE_LOOP, VertexFormats.POSITION);
+		buf.begin(VertexFormat.DrawMode.LINE_STRIP, VertexFormats.POSITION);
 		line.applyColour();
 		
-		for (int i = 0; i <= 40; i++)
+		for (int i = 0; i <= STEPS + 1; i++)
 		{
-			double tempTheta = i * TAU / 40;
+			double tempTheta = (i  % (STEPS + 1)) * TAU / STEPS; // overlap by one for LINE_STRIP
 			double tempY = this.radii.getY() * Math.cos(tempTheta);
 			double tempZ = this.radii.getZ() * Math.sin(tempTheta);
 			
@@ -134,12 +139,12 @@ public class RenderEllipsoid extends RenderRegion
 		int zRad = (int)Math.floor(this.radii.getZ());
 		for (int zBlock = -zRad; zBlock < zRad; zBlock++)
 		{
-			buf.begin(GL11.GL_LINE_LOOP, VertexFormats.POSITION);
+			buf.begin(VertexFormat.DrawMode.LINE_STRIP, VertexFormats.POSITION);
 			line.applyColour();
 			
-			for (int i = 0; i <= 40; i++)
+			for (int i = 0; i <= STEPS + 1; i++)
 			{
-				double tempTheta = i * TAU / 40;
+				double tempTheta = (i  % (STEPS + 1)) * TAU / STEPS; // overlap by one for LINE_STRIP
 				double tempX = this.radii.getX() * Math.sin(tempTheta) * Math.sin(Math.acos(zBlock / this.radii.getZ()));
 				double tempY = this.radii.getY() * Math.cos(tempTheta) * Math.sin(Math.acos(zBlock / this.radii.getZ()));
 				
@@ -148,12 +153,12 @@ public class RenderEllipsoid extends RenderRegion
 			tessellator.draw();
 		}
 		
-		buf.begin(GL11.GL_LINE_LOOP, VertexFormats.POSITION);
+		buf.begin(VertexFormat.DrawMode.LINE_STRIP, VertexFormats.POSITION);
 		line.applyColour();
 		
-		for (int i = 0; i <= 40; i++)
+		for (int i = 0; i <= STEPS + 1; i++)
 		{
-			double tempTheta = i * TAU / 40;
+			double tempTheta = (i  % (STEPS + 1)) * TAU / STEPS; // overlap by one for LINE_STRIP
 			double tempX = this.radii.getX() * Math.cos(tempTheta);
 			double tempY = this.radii.getY() * Math.sin(tempTheta);
 			

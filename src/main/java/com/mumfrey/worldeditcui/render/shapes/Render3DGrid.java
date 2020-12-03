@@ -8,9 +8,9 @@ import com.mumfrey.worldeditcui.util.Observable;
 import com.mumfrey.worldeditcui.util.Vector3;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.util.math.MathHelper;
-import org.lwjgl.opengl.GL11;
 
 /**
  * Draws the grid for a region between
@@ -95,7 +95,7 @@ public class Render3DGrid extends RenderRegion
 			{
 				if (line.prepare(this.style.getRenderType()))
 				{
-					buf.begin(GL11.GL_QUADS, VertexFormats.POSITION);
+					buf.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
 					line.applyColour(0.25F);
 					for (int i = 0; i < vertices.length; i += 3)
 					{
@@ -124,7 +124,7 @@ public class Render3DGrid extends RenderRegion
 				continue;
 			}
 			
-			buf.begin(GL11.GL_LINES, VertexFormats.POSITION);
+			buf.begin(VertexFormat.DrawMode.LINES, VertexFormats.POSITION);
 			line.applyColour();
 
 			for (double y = Math.max(y1, -cullAtY) + OFFSET; y <= y2 + OFFSET && y <= cullAtY; y += this.spacing)

@@ -7,11 +7,11 @@ import com.mumfrey.worldeditcui.util.Vector3;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.chunk.Chunk;
-import org.lwjgl.opengl.GL11;
 
 public class RenderChunkBoundary extends RenderRegion
 {
@@ -31,9 +31,9 @@ public class RenderChunkBoundary extends RenderRegion
 	@Override
 	public void render(Vector3 cameraPos)
 	{
-		double yMax = this.mc.world != null ? this.mc.world.getHeight() : 256.0;
-		double yMin = 0.0;
-		
+		double yMin = this.mc.world != null ? this.mc.world.getDimension().getLogicalHeight() /* min_y */ : 0.0;
+		double yMax = this.mc.world != null ? this.mc.world.getDimension().method_32924() /* height */ - yMin : 256.0;
+
 		long xBlock = MathHelper.floor(cameraPos.getX());
 		long zBlock = MathHelper.floor(cameraPos.getZ());
 		
@@ -43,7 +43,7 @@ public class RenderChunkBoundary extends RenderRegion
 		double xBase = 0 - (xBlock - (xChunk * 16)) - (cameraPos.getX() - xBlock);
 		double zBase = (0 - (zBlock - (zChunk * 16)) - (cameraPos.getZ() - zBlock)) + 16;
 		
-		this.grid.setPosition(new Vector3(xBase, yMin, zBase - 16), new Vector3(xBase + 16, yMax, zBase));
+		this.grid.setPosition(new Vector3(xBase - OFFSET, yMin, zBase - 16 - OFFSET), new Vector3(xBase + 16 + OFFSET, yMax, zBase + OFFSET));
 
 		GlStateManager.pushMatrix();
 		GlStateManager.translated(0.0, -cameraPos.getY(), 0.0);
@@ -71,7 +71,7 @@ public class RenderChunkBoundary extends RenderRegion
 		{
 			if (line.prepare(this.style.getRenderType()))
 			{
-				buf.begin(GL11.GL_LINES, VertexFormats.POSITION);
+				buf.begin(VertexFormat.DrawMode.LINES, VertexFormats.POSITION);
 				line.applyColour();
 				
 				for (int x = -16; x <= 32; x += spacing)
@@ -112,7 +112,7 @@ public class RenderChunkBoundary extends RenderRegion
 		{
 			if (line.prepare(this.style.getRenderType()))
 			{
-				buf.begin(GL11.GL_LINES, VertexFormats.POSITION);
+				buf.begin(VertexFormat.DrawMode.LINES, VertexFormats.POSITION);
 				line.applyColour();
 
 				int[][] lastHeight = { { -1, -1 }, { -1, -1 } };

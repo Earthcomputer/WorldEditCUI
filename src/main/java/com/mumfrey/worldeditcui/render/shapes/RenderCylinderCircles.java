@@ -6,8 +6,8 @@ import com.mumfrey.worldeditcui.render.points.PointCube;
 import com.mumfrey.worldeditcui.util.Vector3;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
-import org.lwjgl.opengl.GL11;
 
 /**
  * Draws the circles around a cylindrical region
@@ -54,7 +54,7 @@ public class RenderCylinderCircles extends RenderRegion
 			double twoPi = Math.PI * 2;
 			for (int yBlock = this.minY + 1; yBlock <= this.maxY; yBlock++)
 			{
-				buf.begin(GL11.GL_LINE_LOOP, VertexFormats.POSITION);
+				buf.begin(VertexFormat.DrawMode.LINE_STRIP, VertexFormats.POSITION);
 				line.applyColour();
 				
 				for (int i = 0; i <= 75; i++)
@@ -65,6 +65,10 @@ public class RenderCylinderCircles extends RenderRegion
 					
 					buf.vertex(xPos + tempX, yBlock - cameraPos.getY(), zPos + tempZ).next();
 				}
+
+				// And back to initial vertex (because we have to use LINE_STRIP rather than LINE_LOOP)
+				buf.vertex(xPos + this.radX, yBlock - cameraPos.getY(), zPos).next();
+
 				tessellator.draw();
 			}
 		}

@@ -7,6 +7,7 @@ import com.mumfrey.worldeditcui.util.Vector2;
 import com.mumfrey.worldeditcui.util.Vector3;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import org.lwjgl.opengl.GL11;
 
@@ -45,7 +46,7 @@ public class Render2DBox extends RenderRegion
 				continue;
 			}
 			
-			buf.begin(GL11.GL_LINES, VertexFormats.POSITION);
+			buf.begin(VertexFormat.DrawMode.LINES, VertexFormats.POSITION);
 			line.applyColour();
 			
 			for (PointRectangle point : this.points)
